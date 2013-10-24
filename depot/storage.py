@@ -105,7 +105,7 @@ class StorageWrapper(object):
         driver = get_driver(scheme)
         key = uri.username
         secret = uri.password
-        container = uri.netloc
+        container = uri.hostname
         if scheme.startswith('s3'):
             if not key:
                 key = os.environ.get('AWS_ACCESS_KEY_ID')
