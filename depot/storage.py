@@ -99,8 +99,8 @@ class StorageWrapper(object):
         return a libcloud storage or container object.
         """
         scheme = uri.scheme
-        if scheme == "cloudfilesus":
-            scheme = "cloudfiles_us"
+        if "-" in scheme:
+            scheme = scheme.replace("-", "_")
 
         driver = get_driver(scheme)
         key = uri.username
