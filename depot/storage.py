@@ -98,18 +98,22 @@ class StorageWrapper(object):
         Given a URI like local:///srv/repo or s3://key:secret/apt.example.com,
         return a libcloud storage or container object.
         """
-        driver = get_driver(uri.scheme)
+        scheme = uri.scheme
+        if scheme == "cloudfilesus":
+            scheme = "cloudfiles_us"
+
+        driver = get_driver(scheme)
         key = uri.username
         secret = uri.password
         container = uri.netloc
-        if uri.scheme.startswith('s3'):
+        if scheme.startswith('s3'):
             if not key:
                 key = os.environ.get('AWS_ACCESS_KEY_ID')
             if not secret:
                 secret = os.environ.get('AWS_SECRET_ACCESS_KEY')
             if not (key and secret and container):
                 raise ValueError('For S3 you must provide an access key ID, secret access key, and bucket name')
-        elif uri.scheme == 'local':
+        elif scheme == 'local':
             parts = []
             if uri.netloc:
                 parts.append(uri.netloc)
